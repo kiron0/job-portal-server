@@ -124,10 +124,27 @@ const getSingleUser = async (req: Request, res: Response) => {
   }
 };
 
-
+// get the hr lists
+const getHrList = async (req: Request, res: Response) => {
+  try {
+    const hrList = await User.find({ role: "hr" });
+    res.status(200).json({
+      message: "All hr list",
+      status: 200,
+      data: hrList,
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: "Internal Server Error",
+      status: 500,
+      error: error,
+    });
+  }
+};
 
 export const userRouter = {
   signUp,
   getAllUsers,
   getSingleUser,
+  getHrList,
 };
