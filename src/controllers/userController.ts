@@ -169,6 +169,31 @@ const makeUserToHr = async (req: Request, res: Response) => {
   }
 };
 
+// get user by id
+const getUserById = async (req: Request, res: Response) => {
+  const { userId } = req.params;
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).send({
+        message: "User not found with this id",
+        status: 404,
+      });
+    }
+    res.status(200).json({
+      message: "User by id",
+      status: 200,
+      data: user,
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: "Internal Server Error",
+      status: 500,
+      error: error,
+    });
+  }
+};
+
 
 export const userRouter = {
   signUp,
@@ -176,4 +201,5 @@ export const userRouter = {
   getSingleUser,
   getHrList,
   makeUserToHr,
+  getUserById,
 };
