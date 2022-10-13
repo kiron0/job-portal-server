@@ -1,6 +1,9 @@
 import bcrypt from "bcrypt";
 import { Request, Response } from "express";
 import { User } from "../models/userModel";
+import sendMailWIthGmail from "../utils/email";
+import { generateToken } from "../utils/generateToken";
+import log from "../utils/logger";
 
 // post data
 const signUp = async (req: Request, res: Response) => {
@@ -47,24 +50,31 @@ const signUp = async (req: Request, res: Response) => {
       to: savedUser.email,
       subject: "Confirm your email",
       html: `Hi  ${savedUser.firstName}  ,
-          <p>Thanks for signing up with us. </p>
-          <p> Your confirmation code is <strong>${confirmationToken}</strong> </p>      
-          <p>Type the confirmation code on verification page or click on the link below</p>
-          <a href="${req.protocol}://${req.get(
+      <p>Thanks for signing up with us. </p>
+      <p> Your confirmation code is <strong>${confirmationToken}</strong> </p>      
+      <p>Type the confirmation code on verification page or click on the link below</p>
+      <a href="${req.protocol}://${req.get(
         "host"
-      )}/api/v1/user/confirm?token=${confirmationToken}&email=${savedUser.email
-        }">Confirm Email</a>
-          <p>${req.protocol}://${req.get(
-          "host"
-        )}/api/v1/user/confirm?token=${confirmationToken}&email=${savedUser.email
-        }</p> Or copy the link and paste it in your browser
-          
-          <p>Thanks</p>
-          <p>If you didn't sign up with us, please ignore this email</p>
-          `,
+      )}/api/v1/user/confirm?token=${confirmationToken}&email=${
+        savedUser.email
+      }">Confirm Email</a>
+
+      <p>${req.protocol}://${req.get(
+        "host"
+      )}/api/v1/user/confirm?token=${confirmationToken}&email=${
+        savedUser.email
+      }</p> Or copy the link and paste it in your browser
+      
+
+      <p>Thanks</p>
+
+
+      <p>If you didn't sign up with us, please ignore this email</p>
+      `,
     };
 
-    // send mail                  
+    // send mail
+    await sendMailWIthGmail(mailData);
 
     res.status(201).json({
       message: "User created successfully",
@@ -73,11 +83,97 @@ const signUp = async (req: Request, res: Response) => {
       mailData: mailData,
     });
   } catch (error) {
-    console.error(error);
+    log.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
 
+// login an user
+const login = async (req: Request, res: Response) => {
+  try {
+    const { email, password, userName } = req.body;
+    const user = await User.findOne({
+      $or: [{ email }, { userName }],
+    });
+    // log.info(user);
+
+    if (!user) {
+      return res.status(404).send({
+        message: "User not found with this email, please signup first",
+        status: 404,
+      });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    // log.info(isMatch);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    if (user.status === "inactive") {
+      return res.status(401).send({
+        message: "Your account is inactive",
+        status: 401,
+      });
+    }
+
+    const token = generateToken(user);
+    const { password: pass, ...data } = user._doc;
+    res.status(200).json({
+      message: "User logged in successfully",
+      status: 200,
+      data: data,
+      token: token,
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: "Internal Server Error",
+      status: 500,
+      error: error,
+    });
+  }
+};
+
+// confirm user
+const confirmUser = async (req: Request, res: Response) => {
+  try {
+    const { token, email } = req.query;
+
+    // log.info(`token: ${token}, email: ${email}`);
+    if (!token || !email) {
+      return res.status(400).send({
+        message: "Token and email required",
+        status: 400,
+      });
+    }
+
+    //   find user by email and token
+    const user = await User.findOne({
+      email,
+      confirmationToken: token,
+      confirmationTokenExpires: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.status(404).send({
+        message: "Token is invalid or expired, please signup again",
+        status: 404,
+      });
+    }
+    user.status = "active";
+    // empty confirmation token & confirmation expires
+    user.confirmationToken = "";
+    user.confirmationTokenExpires = "";
+    await user.save();
+    res.render("confirmation", { user });
+  } catch (error) {
+    res.status(500).send({
+      message: "Internal Server Error",
+      status: 500,
+      error: error,
+    });
+  }
+};
 
 // get all users
 const getAllUsers = async (req: Request, res: Response) => {
@@ -97,7 +193,7 @@ const getAllUsers = async (req: Request, res: Response) => {
   }
 };
 
-// get single user
+// get a single user
 const getSingleUser = async (req: Request, res: Response) => {
   const email = req.body?.user?.email;
   try {
