@@ -39,7 +39,7 @@ const getHrCompanyById = async (req: Request, res: Response) => {
   }
 };
 
-export const hiringRouter = {
+export const hiringCompanyRoute = {
   createHrCompany,
   getHrCompanies,
   getHrCompanyById,
