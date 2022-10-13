@@ -27,7 +27,7 @@ app.use("/api/v1/jobs", jobRoute);
 app.use("/api/v1/hrCompany", hiringCompanyRoute);
 app.use("/api/v1/availableJobs", availableJobsRoute);
 
-// 404 response
+// 404 response or not found routes
 app.all("*", (req: Request, res: Response) => {
   res.status(404).send({
     message: "Not Found",
