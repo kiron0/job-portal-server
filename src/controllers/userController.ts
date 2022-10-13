@@ -321,6 +321,8 @@ const updateUserById = async (req: Request, res: Response) => {
 
 export const userRouter = {
   signUp,
+  login,
+  confirmUser,
   getAllUsers,
   getSingleUser,
   getHrList,
