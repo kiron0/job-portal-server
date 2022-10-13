@@ -194,6 +194,34 @@ const getUserById = async (req: Request, res: Response) => {
   }
 };
 
+// update user by id but email and userName can't be updated by user
+const updateUserById = async (req: Request, res: Response) => {
+  const { userId } = req.params;
+  const { email, userName, role, ...data } = req.body;
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).send({
+        message: "User not found with this id",
+        status: 404,
+      });
+    }
+    const updatedUser = await User.findByIdAndUpdate(userId, data, {
+      new: true,
+    });
+    res.status(200).json({
+      message: "User updated successfully",
+      status: 200,
+      data: updatedUser,
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: "Internal Server Error",
+      status: 500,
+      error: error,
+    });
+  }
+};
 
 export const userRouter = {
   signUp,
@@ -202,4 +230,5 @@ export const userRouter = {
   getHrList,
   makeUserToHr,
   getUserById,
+  updateUserById,
 };
