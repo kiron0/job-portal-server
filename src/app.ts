@@ -14,6 +14,7 @@ app.set("view engine", "ejs");
 import userRoute from "./routes/v1/userRoute";
 import jobRoute from "./routes/v1/jobRoute";
 import hiringCompanyRoute from "./routes/v1/hiringCompanyRoute";
+import availableJobsRoute from "./routes/v1/availableJobsRoute";
 
 /* here will be the all the routes */
 app.get("/", (req: Request, res: Response) => {
@@ -24,6 +25,7 @@ app.get("/", (req: Request, res: Response) => {
 app.use("/api/v1/", userRoute);
 app.use("/api/v1/jobs", jobRoute);
 app.use("/api/v1/hrCompany", hiringCompanyRoute);
+app.use("/api/v1/availableJobs", availableJobsRoute);
 
 // 404 response
 app.all("*", (req: Request, res: Response) => {
