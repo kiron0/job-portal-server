@@ -3,16 +3,16 @@ import validator from "validator";
 import PasswordValidator from "password-validator";
 
 const passwordSchema = new PasswordValidator()
-  .min(8)
-  .has()
-  .uppercase()
-  .has()
-  .lowercase()
-  .has()
-  .digits()
-  .has()
-  .not()
-  .spaces();
+          .min(8)
+          .has()
+          .uppercase()
+          .has()
+          .lowercase()
+          .has()
+          .digits()
+          .has()
+          .not()
+          .spaces();
 
 export interface IUser extends Document {
           userName: string;
@@ -31,10 +31,10 @@ export interface IUser extends Document {
           passWordResetToken: string;
           passWordResetExpires: Date;
           _doc: any;
-        }
+}
 
 const UserSchema = new Schema<IUser>({
-          userName :{
+          userName: {
                     type: String,
                     required: true,
                     unique: true,
@@ -60,6 +60,56 @@ const UserSchema = new Schema<IUser>({
                               message: 'Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character'
                     }
           },
-});
+          role: {
+                    type: String,
+                    enum: ['candidate', 'admin', 'hr'],
+                    default: 'candidate'
+          },
+          firstName: {
+                    type: String,
+                    required: true,
+                    trim: true,
+                    maxLength: [20, 'First name cannot be more than 20 characters'],
+                    minLength: [3, 'First name cannot be less than 3 characters']
+          },
+          lastName: {
+                    type: String,
+                    required: true,
+                    trim: true,
+                    maxLength: [20, 'Last name cannot be more than 20 characters'],
+                    minLength: [3, 'Last name cannot be less than 3 characters']
+          },
+          phone: {
+                    type: String,
+                    required: true,
+                    trim: true,
+                    maxLength: [20, 'Phone number cannot be more than 20 characters'],
+                    minLength: [3, 'Phone number cannot be less than 3 characters']
+          },
+          address: {
+                    type: String,
+                    required: true,
+                    trim: true,
+          },
+          image: {
+                    type: String,
+                    required: true,
+                    validate: [validator.isURL, 'Please provide a valid image url'],
+                    default: 'https://res.cloudinary.com/dzqkqzjxw/image/upload/v1600000000/avatars/default-avatar.png'
+          },
+          status: {
+                    type: String,
+                    enum: ['active', 'inactive'],
+                    default: 'inactive'
+          },
+          confirmationToken: String,
+          confirmationTokenExpires: Date,
+          passWordChangedAt: Date,
+          passWordResetToken: String,
+          passWordResetExpires: Date
+},
+          {
+                    timestamps: true
+          });
 
 export default UserSchema;
