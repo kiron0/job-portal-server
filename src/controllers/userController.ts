@@ -78,6 +78,26 @@ const signUp = async (req: Request, res: Response) => {
   }
 };
 
+
+// get all users
+const getAllUsers = async (req: Request, res: Response) => {
+  try {
+    const users = await User.find();
+    res.status(200).json({
+      message: "All users",
+      status: 200,
+      data: users,
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: "Internal Server Error",
+      status: 500,
+      error: error,
+    });
+  }
+};
+
 export const userRouter = {
-  signUp
+  signUp,
+  getAllUsers,
 };
