@@ -11,7 +11,6 @@ app.use(express.json());
 app.set("view engine", "ejs");
 
 /* here will be all the imports routes */
-
 import userRoute from "./routes/v1/userRoute";
 
 /* here will be the all the routes */

@@ -198,6 +198,7 @@ const getSingleUser = async (req: Request, res: Response) => {
   const email = req.body?.user?.email;
   try {
     const user = await User.findOne({ email });
+    console.log(user);
     if (!user) {
       return res.status(404).send({
         message: "User not found with this email, please signup first",
