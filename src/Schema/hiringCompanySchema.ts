@@ -2,7 +2,7 @@ import { Schema } from "mongoose";
 import validator from "validator";
 const ObjectId = Schema.Types.ObjectId;
 
-const hiringCompanySchema = new Schema({
+const highringCompanySchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -61,4 +61,4 @@ const hiringCompanySchema = new Schema({
   ],
 });
 
-export default hiringCompanySchema;
+export default highringCompanySchema;
