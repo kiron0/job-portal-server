@@ -7,14 +7,17 @@ const app: Application = express();
 app.use(cors());
 app.use(express.json());
 
+/* express file system */
+app.use("/uploads", express.static("uploads"));
+
 // set the view engine to ejs
 app.set("view engine", "ejs");
 
 /* here will be all the imports routes */
-import userRoute from "./routes/v1/userRoute";
-import jobRoute from "./routes/v1/jobRoute";
-import hiringCompanyRoute from "./routes/v1/hiringCompanyRoute";
+
 import availableJobsRoute from "./routes/v1/availableJobsRoute";
+import hiringCompanyRoute from "./routes/v1/hiringCompanyRoute";
+import userRoute from "./routes/v1/userRoute";
 
 /* here will be the all the routes */
 app.get("/", (req: Request, res: Response) => {
@@ -22,12 +25,11 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 /* Here is the User Routes */
-app.use("/api/v1/", userRoute);
-app.use("/api/v1/jobs", jobRoute);
 app.use("/api/v1/hrCompany", hiringCompanyRoute);
-app.use("/api/v1/availableJobs", availableJobsRoute);
+app.use("/api/v1/", userRoute);
+app.use("/api/v1/jobs", availableJobsRoute);
 
-// 404 response or not found routes
+// 404 response
 app.all("*", (req: Request, res: Response) => {
   res.status(404).send({
     message: "Not Found",
