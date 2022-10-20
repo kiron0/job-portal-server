@@ -32,6 +32,14 @@ app.get("/api_routes/user", (req: Request, res: Response) => {
   res.render("userRoutes");
 });
 
+app.get("/api_routes/hiring", (req: Request, res: Response) => {
+  res.render("hiringCompanyRoutes");
+});
+
+app.get("/api_routes/available", (req: Request, res: Response) => {
+  res.render("availableJobsRoutes");
+});
+
 /* Here is the User Routes */
 app.use("/api/v1/hrCompany", hiringCompanyRoute);
 app.use("/api/v1/", userRoute);

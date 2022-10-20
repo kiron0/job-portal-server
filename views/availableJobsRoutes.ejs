@@ -31,23 +31,14 @@
 <body class="bg-black md:h-screen">
   <div class="flex flex-col justify-center items-center md:h-screen py-10 md:py-0">
     <div class="px-6 md:px-0">
-      <p class="py-4 text-white text-center text-lg">Here are the available routes</p>
+      <p class="py-4 text-white text-center text-lg">Here are the available routes for Available Jobs</p>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         <a class="text-white btn btn-primary" href="/api_routes">Back</a>
         <a class="text-white btn btn-accent" href="/">Back to Home</a>
-        <a class="text-white btn btn-neutral" href="/api/v1/signup">[POST] /signup</a>
-        <a class="text-white btn btn-neutral" href="/api/v1/login">[POST] /login</a>
-        <a class="text-white btn btn-neutral" href="/api/v1/user/confirm">[GET] /user/confirm</a>
-        <a class="text-white btn btn-neutral" href="/api/v1/user/me">[GET] /user/me</a>
-        <a class="text-white btn btn-neutral" href="/api/v1/user/all">[GET] /user/all</a>
-        <a class="text-white btn btn-neutral" href="/api/v1/user/hrs">[GET] /user/hrs</a>
-        <a class="text-white btn btn-neutral" href="/api/v1/manager/jobs">[GET] /manager/jobs</a>
-        <a class="text-white btn btn-neutral" href="/api/v1/user/image/upload">[POST] /user/image/upload</a>
-        <a class="text-white btn btn-neutral" href="/api/v1/user/resume/upload">[POST] /user/resume/upload</a>
-        <a class="text-white btn btn-neutral" href="/api/v1/user/:userId">[PATCH] /user/:userId</a>
-        <a class="text-white btn btn-disabled" href="/">Only for Admin ></a>
-        <a class="text-white btn btn-neutral" href="/api/v1/user/:userId">[GET] /user/:userId</a>
-        <a class="text-white btn btn-neutral" href="/user/promote/:userId">[PATCH] /user/promote/:userId</a>
+        <a class="text-white btn btn-disabled" href="/">Only for Hr & Admin ></a>
+        <a class="text-white btn btn-neutral" href="/api/v1/jobs">[POST] /jobs</a>
+        <a class="text-white btn btn-neutral" href="/api/v1/jobs">[GET] /jobs</a>
+        <a class="text-white btn btn-neutral" href="/api/v1/jobs/:id">[GET] /jobs/:id</a>
       </div>
       <div class="flex flex-col justify-center items-center">
         <a href="https://github.com/kiron0/job-portal-server" target="_blank"
