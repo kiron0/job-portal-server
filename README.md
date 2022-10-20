@@ -18,10 +18,10 @@ or
 }
 ```
 
-JWT Token
+JWT Token (authorization)
 
 ```
-`token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImtpNG9uMEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJ1c2VyTmFtZSI6InRvdWZpcWhhc2Fua2lyb24iLCJpYXQiOjE2NjYyNjYyNDMsImV4cCI6MTY2ODg1ODI0M30.36ElIkyBqOZqh3Co21n4Sqfk0PT5qVffKe_Y_qUYlHo`
+`Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImtpNG9uMEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJ1c2VyTmFtZSI6InRvdWZpcWhhc2Fua2lyb24iLCJpYXQiOjE2NjYyNjYyNDMsImV4cCI6MTY2ODg1ODI0M30.36ElIkyBqOZqh3Co21n4Sqfk0PT5qVffKe_Y_qUYlHo`
 ```
 
 > ## Get User Routes/End Points
@@ -65,6 +65,96 @@ JWT Token
 
 ```
 /api/v1/user/hrs
+
+```
+
+> [GET] /manager/jobs
+
+```
+/api/v1/manager/jobs
+
+```
+
+> [POST] /user/image/upload
+
+```
+/api/v1/user/image/upload
+
+```
+
+> [POST] /user/resume/upload
+
+```
+/api/v1/user/resume/upload
+
+```
+
+> [PATCH] /user/:userId
+
+```
+/api/v1/user/:userId
+
+```
+
+> [GET] /user/:userId
+
+```
+/api/v1/user/:userId
+
+```
+
+> [PATCH] /user/promote/:userId
+
+```
+/api/v1/user/promote/:userId
+
+```
+
+
+> ## Get Hiring Company Routes/End Points
+
+> [POST] /hrCompany
+
+```
+/api/v1/hrCompany
+
+```
+
+> [GET] /hrCompany
+
+```
+/api/v1/hrCompany
+
+```
+
+> [GET] /hrCompany/:id
+
+```
+/api/v1/hrCompany/:id
+
+```
+
+
+> ## Get Available Jobs Routes/End Points
+
+> [POST] /jobs
+
+```
+/api/v1/jobs
+
+```
+
+> [GET] /jobs
+
+```
+/api/v1/jobs
+
+```
+
+> [GET] /jobs/:id
+
+```
+/api/v1/jobs/:id
 
 ```
 
