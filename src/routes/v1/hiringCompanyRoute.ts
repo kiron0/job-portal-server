@@ -1,13 +1,13 @@
 import { Router } from "express";
-import { hiringCompanyRoute } from "../../controllers/hiringCompanyController";
+import { hiringRouter } from "../../controllers/hiringCompanyController";
 import { authorization } from "../../middlewares/authorization";
 import { verifyToken } from "../../middlewares/verifyToken";
 const router: Router = Router();
 
 router
   .route("/")
-  .post(verifyToken, authorization(["admin"]), hiringCompanyRoute.createHrCompany)
-  .get(hiringCompanyRoute.getHrCompanies);
+  .post(verifyToken, authorization(["admin"]), hiringRouter.createHrCompany)
+  .get(hiringRouter.getHrCompanies);
 
-router.route("/:id").get(hiringCompanyRoute.getHrCompanyById);
+router.route("/:id").get(hiringRouter.getHrCompanyById);
 export default router;
