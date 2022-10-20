@@ -9,7 +9,7 @@ const authorization = (roles: string[]) => {
         status: 401,
       });
     }
-   log.info(`role: ${role}`);
+  //  log.info(`role: ${role}`);
     next();
   };
 };
