@@ -1,9 +1,9 @@
 import bcrypt from "bcrypt";
 import { Request, Response } from "express";
+import { availableJobs } from "../models/availableJobsModel";
 import { User } from "../models/userModel";
 import sendMailWIthGmail from "../utils/email";
 import { generateToken } from "../utils/generateToken";
-import log from "../utils/logger";
 
 // post data
 const signUp = async (req: Request, res: Response) => {
@@ -83,7 +83,6 @@ const signUp = async (req: Request, res: Response) => {
       mailData: mailData,
     });
   } catch (error) {
-    log.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -193,12 +192,11 @@ const getAllUsers = async (req: Request, res: Response) => {
   }
 };
 
-// get a single user
-const getSingleUser = async (req: Request, res: Response) => {
+// get me
+const getMe = async (req: Request, res: Response) => {
   const email = req.body?.user?.email;
   try {
     const user = await User.findOne({ email });
-    console.log(user);
     if (!user) {
       return res.status(404).send({
         message: "User not found with this email, please signup first",
@@ -239,8 +237,8 @@ const getHrList = async (req: Request, res: Response) => {
   }
 };
 
-// make user to hr
-const makeUserToHr = async (req: Request, res: Response) => {
+// make user as hr
+const makeUserAsHr = async (req: Request, res: Response) => {
   const { userId } = req.params;
   try {
     const user = await User.findById(userId);
@@ -320,14 +318,72 @@ const updateUserById = async (req: Request, res: Response) => {
   }
 };
 
+// upload profile image
+const uploadProfileImage = async (req: Request, res: Response) => {
+  try {
+    res.status(200).json({
+      status: "success",
+      message: "Image uploaded",
+      data: req.file,
+      imageUrl: `${req.protocol}://${req.get("host")}/${req.file?.path}`,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      message: error,
+    });
+  }
+};
+
+// upload resume file
+const uploadResumeFile = async (req: Request, res: Response) => {
+  try {
+    res.status(200).json({
+      status: "success",
+      message: "Resume uploaded",
+      data: req.file,
+      resumeUrl: `${req.protocol}://${req.get("host")}/${req.file?.path}`,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      message: error,
+    });
+  }
+};
+
+// get all the jobs posted by a specific hr mail
+const getJobsByHrId = async (req: Request, res: Response) => {
+  const email = req.body?.user?.email;
+  console.log(email);
+  
+  try {
+    const jobs = await availableJobs.find({ postedBy: email });
+    res.status(200).json({
+      message: "All jobs by hr id",
+      status: 200,
+      data: jobs,
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: "Internal Server Error",
+      status: 500,
+      error: error,
+    });
+  }
+};
+
 export const userRouter = {
   signUp,
   login,
   confirmUser,
   getAllUsers,
-  getSingleUser,
+  getMe,
   getHrList,
-  makeUserToHr,
+  makeUserAsHr,
   getUserById,
   updateUserById,
+  uploadProfileImage,
+  uploadResumeFile,
+  getJobsByHrId,
 };
