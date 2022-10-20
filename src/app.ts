@@ -24,6 +24,14 @@ app.get("/", (req: Request, res: Response) => {
   res.render("index");
 });
 
+app.get("/api_routes", (req: Request, res: Response) => {
+  res.render("routes");
+});
+
+app.get("/api_routes/user", (req: Request, res: Response) => {
+  res.render("userRoutes");
+});
+
 /* Here is the User Routes */
 app.use("/api/v1/hrCompany", hiringCompanyRoute);
 app.use("/api/v1/", userRoute);

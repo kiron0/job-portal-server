@@ -43,12 +43,10 @@ router.get(
   userRouter.getJobsByHrId
 );
 
-router
-  .route("/user/:userId")
+router.route("/user/:userId")
   .get(verifyToken, authorization(["admin"]), userRouter.getUserById);
 
-router
-  .route("/user/promote/:userId")
+router.route("/user/promote/:userId")
   .patch(verifyToken, authorization(["admin"]), userRouter.makeUserAsHr);
 
 router.route("/user/:userId").patch(verifyToken, userRouter.updateUserById);
